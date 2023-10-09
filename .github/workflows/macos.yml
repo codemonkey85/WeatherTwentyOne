@@ -11,21 +11,21 @@ on:
   workflow_dispatch:
 
 env:
-    DOTNETVERSION:  6.0.200-preview.22055.15
-    MAUIROLLBACKLINK: https://aka.ms/dotnet/maui/preview.12.json
+  DOTNETVERSION: 6.0.200-preview.22055.15
+  MAUIROLLBACKLINK: https://aka.ms/dotnet/maui/preview.12.json
 
 jobs:
   buildmac:
     runs-on: macos-11
-    
+
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup .NET Core SDK ${{env.DOTNETVERSION}}
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version:  '${{env.DOTNETVERSION}}'
-          
+          dotnet-version: "${{env.DOTNETVERSION}}"
+
       - name: Install .NET MAUI
         shell: bash
         run: |
@@ -49,4 +49,3 @@ jobs:
           name: artifacts-mac
           path: |
             src/WeatherTwentyOne/bin/Debug/**/*.pkg
-            

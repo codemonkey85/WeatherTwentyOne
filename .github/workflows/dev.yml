@@ -2,28 +2,28 @@ name: Build MAUI-Windows
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
   workflow_dispatch:
 
 env:
-    DOTNETVERSION:  6.0.200-preview.22055.15
-    MAUIROLLBACKLINK: https://aka.ms/dotnet/maui/preview.12.json
+  DOTNETVERSION: 6.0.200-preview.22055.15
+  MAUIROLLBACKLINK: https://aka.ms/dotnet/maui/preview.12.json
 
 jobs:
   buildwindows:
     runs-on: windows-2022
-    
+
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup .NET Core SDK ${{env.DOTNETVERSION}}
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '${{env.DOTNETVERSION}}'
+          dotnet-version: "${{env.DOTNETVERSION}}"
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
@@ -37,7 +37,7 @@ jobs:
           & dotnet nuget locals all --clear
           & dotnet workload install maui --from-rollback-file ${{env.MAUIROLLBACKLINK}} --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
           & dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --from-rollback-file ${{env.MAUIROLLBACKLINK}} --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
-            
+
       - name: Restore nuget packages
         run: dotnet restore src\WeatherTwentyOne.sln
 
